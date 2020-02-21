@@ -23,7 +23,7 @@ module.exports = {
     if (packageType == "package.json") {
       return JSON.parse(fs.readFileSync(fpath))
     } else if (packageType == "pom.xml") {
-      fs.readFileSync(fpath, function(err, data) {
+      return fs.readFileSync(fpath, function(err, data) {
         if (err) {
           core.error(err)
           core.setFailed(err.message)
