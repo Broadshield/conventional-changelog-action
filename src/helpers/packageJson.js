@@ -36,6 +36,13 @@ module.exports = {
 
     }
   },
+  /**
+   * Return the version
+   *
+   * @param packageJson
+   * @param packageType
+   * @return {*}
+   */
   version: (packageJson, packageType) => {
     if (packageType == "package.json") {
       // Update the package.json with the new version
