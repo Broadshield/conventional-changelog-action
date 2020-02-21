@@ -27,9 +27,11 @@ async function run() {
         core.info(`Tag prefix: ${tagPrefix}`)
 
         try {
+          const jOut = packageJson.get(packageType)
+          core.info(JSON.stringify(jOut))
           // Bump the version in the package.json
           const jsonPackage = packageJson.bump(
-            packageJson.get(packageType),
+            jOut,
             recommendation.releaseType,
             packageType,
             tagPrefix
