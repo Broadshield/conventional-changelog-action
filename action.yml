@@ -12,6 +12,11 @@ branding:
 inputs:
   github-token:
     required: true
+  
+  package-type:
+    required: false
+    description: 'The package type to use, package.json or pom.xml'
+    default: 'package.json'
 
   git-message:
     description: 'Commit message to use'
