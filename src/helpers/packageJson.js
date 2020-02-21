@@ -16,23 +16,12 @@ module.exports = {
       return JSON.parse(fs.readFileSync(path.resolve('./', packageType)))
     }
     if (packageType == "pom.xml") {
-      const opts = {
-        filePath: path.resolve('./', packageType)
-      }
-      return pomParser.parse(opts, function (err, pomResponse) {
-        if (err) {
-          core.error(err)
-          core.setFailed(err.message)
-          process.exit(1)
-        }
-
-        // The original pom xml that was loaded is provided.
-        core.info("XML: " + pomResponse.pomXml)
+      fs.readFileSync(path.resolve('./', packageType), function(err, data) {
+        var json = JSON.parse(parser.toJson(data, {reversible: true}));
         // The parsed pom pbject.
-        core.info("OBJECT: " + JSON.stringify(pomResponse.pomObject))
-        return pomResponse.pomObject
+        core.info("OBJECT: " + JSON.stringify(json))
+        return json
       })
-
 
     }
   },
