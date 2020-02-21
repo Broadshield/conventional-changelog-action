@@ -23,7 +23,7 @@ module.exports = {
       return JSON.parse(fs.readFileSync(packageJsonLoc))
     }
     if (packageType == "pom.xml") {
-      pomParser.parse(opts, function(err, pomResponse) {
+      return pomParser.parse(opts, function(err, pomResponse) {
         if (err) {
           core.error(err)
         core.setFailed(err.message)
@@ -31,9 +31,9 @@ module.exports = {
         }
         
         // The original pom xml that was loaded is provided.
-        core.info("XML: " + pomResponse.pomXml);
+        core.info("XML: " + pomResponse.pomXml)
         // The parsed pom pbject.
-        core.info("OBJECT: " + JSON.stringify(pomResponse.pomObject));
+        core.info("OBJECT: " + JSON.stringify(pomResponse.pomObject))
         return pomResponse.pomObject
       })
       
