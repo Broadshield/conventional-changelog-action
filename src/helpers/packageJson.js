@@ -12,6 +12,7 @@ module.exports = {
    * @return {any}
    */
   get: (packageType) => {
+    core.info(path.resolve('./', packageType))
     if (packageType == "package.json") {
       return JSON.parse(fs.readFileSync(path.resolve('./', packageType)))
     }
