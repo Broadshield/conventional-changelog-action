@@ -1,6 +1,7 @@
 const path = require('path')
 const fs = require('fs')
 const pomParser = require("pom-parser")
+const core = require('@actions/core')
 
 const packageJsonLoc = path.resolve('./', 'package.json')
 const pomXmlLoc = path.resolve('./', 'pom.xml')
@@ -24,7 +25,8 @@ module.exports = {
     if (packageType == "pom.xml") {
       err, pomResponse = pomParser(opts)
       if (err) {
-        console.log("ERROR: " + err)
+        core.error(err)
+        core.setFailed(err.message)
         process.exit(1)
       }
       return pomResponse.pomObject
@@ -90,10 +92,15 @@ module.exports = {
     } else if (packageType == "pom.xml") {
       const builder = new xml2js.Builder()
       const xml = builder.buildObject(packageJson)
-
-      fs.writeFileSync("edited-pom.xml", xml, function (err, data) {
-        if (err) console.log(err)
+      core.info(xml)
+      fs.writeFileSync(pomXmlLoc, xml, function (err, data) {
+        if (err) {
+          core.error(err)
+          core.setFailed(err.message)
+          process.exit(1)
+        }
         console.log("successfully written our update xml to file")
+
       })
     }
   },
