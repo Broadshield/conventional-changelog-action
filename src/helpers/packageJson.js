@@ -64,7 +64,12 @@ module.exports = {
    * @return {*}
    */
   bump: (packageJson, releaseType, packageType, tagPrefix) => {
-    let [major, minor, patch] = this.version(packageJson).split('.')
+    if (packageType == "package.json") {
+      let [major, minor, patch] = packageJson.version.split('.')
+    } else {
+      let [major, minor, patch] = packageJson.project.version.split('.')
+    }
+    
 
     switch (releaseType) {
       case 'major':
