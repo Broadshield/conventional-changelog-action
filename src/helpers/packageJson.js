@@ -13,7 +13,7 @@ module.exports = {
    */
   get: (packageType) => {
     const fpath = path.resolve('./', packageType)
-    core.info(fpath)
+    core.info(`Package path: ${fpath}`)
     try {
       fs.accessSync(fpath, fs.constants.R_OK | fs.constants.W_OK)
       core.info('can read/write ' + packageType)
@@ -31,11 +31,8 @@ module.exports = {
         }
         json = JSON.parse(parser.toJson(data, { reversible: true }))
         // The parsed pom pbject.
-        core.info("OBJECT: " + JSON.stringify(json))
         return json
       })
-
-
     } else {
       core.setFailed("Incorrect package Type")
       process.exit(1)
@@ -67,7 +64,7 @@ module.exports = {
    * @return {*}
    */
   bump: (packageJson, releaseType, packageType, tagPrefix) => {
-    let [major, minor, patch] = packageJson.version.split('.')
+    let [major, minor, patch] = this.version(packageJson).split('.')
 
     switch (releaseType) {
       case 'major':
