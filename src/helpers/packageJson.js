@@ -23,18 +23,19 @@ module.exports = {
     if (packageType == "package.json") {
       return JSON.parse(fs.readFileSync(fpath))
     } else if (packageType == "pom.xml") {
-      return fs.readFileSync(fpath, function(err, data) {
+      var json
+      fs.readFileSync(fpath, function (err, data) {
         if (err) {
           core.error(err)
           core.setFailed(err.message)
           process.exit(1)
         }
-
-        var json = JSON.parse(parser.toJson(data, {reversible: true}))
+        json = JSON.parse(parser.toJson(data, { reversible: true }))
         // The parsed pom pbject.
         core.info("OBJECT: " + JSON.stringify(json))
-        return json
       })
+      return json
+
 
     } else {
       core.setFailed("Incorrect package Type")
