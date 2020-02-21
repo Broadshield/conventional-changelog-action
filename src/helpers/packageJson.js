@@ -23,7 +23,7 @@ module.exports = {
       return JSON.parse(fs.readFileSync(packageJsonLoc))
     }
     if (packageType == "pom.xml") {
-      err, pomResponse = pomParser(opts)
+      err, pomResponse = pomParser.parse(opts)
       if (err) {
         core.error(err)
         core.setFailed(err.message)

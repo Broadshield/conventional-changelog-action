@@ -1,3 +1,5 @@
+![release](https://github.com/Broadshield/conventional-changelog-action/workflows/release/badge.svg)
+
 # Conventional Changelog action
 
 This action will bump version, tag commit and generate a changelog with conventional commits.
@@ -10,6 +12,7 @@ This action will bump version, tag commit and generate a changelog with conventi
 - **Optional** `tag-prefix`: Prefix for the git tags. Default `v`.
 - **Optional** `output-file`: File to output the changelog to. Default `CHANGELOG.md`.
 - **Optional** `changelog-release-count`: Number of releases to preserve in changelog. Default `5`, use `0` to regenerate all.
+- **Optional** `package-type`:The package type to use, `package.json` or `pom.xml`. Default: `package.json`
 
 ## Example usage
 
