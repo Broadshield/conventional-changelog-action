@@ -3,6 +3,7 @@ const fs = require('fs')
 // const pomParser = require("pom-parser")
 const core = require('@actions/core')
 const xml2js = require("xml2js")
+var parser = require('xml2json');
 
 module.exports = {
 

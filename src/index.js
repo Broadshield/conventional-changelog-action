@@ -28,7 +28,6 @@ async function run() {
 
         try {
           const jOut = packageJson.get(packageType)
-          core.info(JSON.stringify(jOut))
           // Bump the version in the package.json
           const jsonPackage = packageJson.bump(
             jOut,
