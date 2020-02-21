@@ -23,11 +23,13 @@ async function run() {
 
       } else {
         core.info(`Recommended release type: ${recommendation.releaseType}`)
+        core.info(`Package type: ${packageType}`)
+        core.info(`Tag prefix: ${tagPrefix}`)
 
         try {
           // Bump the version in the package.json
           const jsonPackage = packageJson.bump(
-            packageJson.get(),
+            packageJson.get(packageType),
             recommendation.releaseType,
             packageType,
             tagPrefix
