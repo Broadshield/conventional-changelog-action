@@ -2,14 +2,7 @@ const path = require('path')
 const fs = require('fs')
 const pomParser = require("pom-parser")
 const core = require('@actions/core')
-
-const packageJsonLoc = path.resolve('./', 'package.json')
-const pomXmlLoc = path.resolve('./', 'pom.xml')
 const xml2js = require("xml2js")
-
-const opts = {
-  filePath: pomXmlLoc, // The path to a pom file
-}
 
 module.exports = {
 
@@ -20,24 +13,27 @@ module.exports = {
    */
   get: (packageType) => {
     if (packageType == "package.json") {
-      return JSON.parse(fs.readFileSync(packageJsonLoc))
+      return JSON.parse(fs.readFileSync(path.resolve('./', packageType)))
     }
     if (packageType == "pom.xml") {
-      return pomParser.parse(opts, function(err, pomResponse) {
+      const opts = {
+        filePath: path.resolve('./', packageType)
+      }
+      return pomParser.parse(opts, function (err, pomResponse) {
         if (err) {
           core.error(err)
-        core.setFailed(err.message)
-        process.exit(1)
+          core.setFailed(err.message)
+          process.exit(1)
         }
-        
+
         // The original pom xml that was loaded is provided.
         core.info("XML: " + pomResponse.pomXml)
         // The parsed pom pbject.
         core.info("OBJECT: " + JSON.stringify(pomResponse.pomObject))
         return pomResponse.pomObject
       })
-      
-      
+
+
     }
   },
   version: (packageJson, packageType) => {
@@ -96,12 +92,12 @@ module.exports = {
    */
   update: (packageJson, packageType) => {
     if (packageType == "package.json") {
-      fs.writeFileSync(packageJsonLoc, JSON.stringify(packageJson, null, 2))
+      fs.writeFileSync(path.resolve('./', packageType), JSON.stringify(packageJson, null, 2))
     } else if (packageType == "pom.xml") {
       const builder = new xml2js.Builder()
       const xml = builder.buildObject(packageJson)
       core.info(xml)
-      fs.writeFileSync(pomXmlLoc, xml, function (err, data) {
+      fs.writeFileSync(path.resolve('./', packageType), xml, function (err, data) {
         if (err) {
           core.error(err)
           core.setFailed(err.message)

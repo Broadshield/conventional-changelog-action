@@ -3,6 +3,7 @@
 
 # Editors
 .vscode
+package-lock.json
 
 # Logs
 logs
