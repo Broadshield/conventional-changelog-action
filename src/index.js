@@ -1,6 +1,5 @@
 const core = require('@actions/core')
 const conventionalRecommendedBump = require('conventional-recommended-bump')
-const pomParser = require("pom-parser");
 
 const git = require('./helpers/git')
 const packageJson = require('./helpers/packageJson')
@@ -33,8 +32,6 @@ async function run() {
             packageType,
             tagPrefix
           )
-
-          const app_version = packageJson.version(jsonPackage, packageType)
 
           // Update the package.json file
           packageJson.update(jsonPackage, packageType)
