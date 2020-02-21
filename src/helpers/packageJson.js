@@ -21,10 +21,9 @@ module.exports = {
       core.error('no access! ' + packageType)
     }
     if (packageType == "package.json") {
-      return JSON.parse(fs.readFileSync(fpath))
+      return JSON.parse(fs.readFileSync(fpath, "utf8"))
     } else if (packageType == "pom.xml") {
-      var json
-      fs.readFileSync(fpath, function (err, data) {
+      return fs.readFileSync(fpath, "utf8", function (err, data) {
         if (err) {
           core.error(err)
           core.setFailed(err.message)
@@ -33,8 +32,8 @@ module.exports = {
         json = JSON.parse(parser.toJson(data, { reversible: true }))
         // The parsed pom pbject.
         core.info("OBJECT: " + JSON.stringify(json))
+        return json
       })
-      return json
 
 
     } else {
