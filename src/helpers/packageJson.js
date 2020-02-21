@@ -21,10 +21,9 @@ module.exports = {
       core.error('no access! ' + packageType)
     }
     if (packageType == "package.json") {
-      return JSON.parse(fs.readFileSync(path.resolve('./', packageType)))
-    }
-    if (packageType == "pom.xml") {
-      fs.readFileSync(path.resolve('./', packageType), function(err, data) {
+      return JSON.parse(fs.readFileSync(fpath))
+    } else if (packageType == "pom.xml") {
+      fs.readFileSync(fpath, function(err, data) {
         if (err) {
           core.error(err)
           core.setFailed(err.message)
@@ -37,6 +36,9 @@ module.exports = {
         return json
       })
 
+    } else {
+      core.setFailed("Incorrect package Type")
+      process.exit(1)
     }
   },
   /**
