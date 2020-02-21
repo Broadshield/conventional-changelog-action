@@ -1,6 +1,6 @@
 const path = require('path')
 const fs = require('fs')
-const pomParser = require("pom-parser")
+// const pomParser = require("pom-parser")
 const core = require('@actions/core')
 const xml2js = require("xml2js")
 
@@ -12,13 +12,26 @@ module.exports = {
    * @return {any}
    */
   get: (packageType) => {
-    core.info(path.resolve('./', packageType))
+    const fpath = path.resolve('./', packageType)
+    core.info(fpath)
+    try {
+      fs.accessSync(fpath, fs.constants.R_OK | fs.constants.W_OK)
+      core.info('can read/write ' + packageType)
+    } catch (err) {
+      core.error('no access! ' + packageType)
+    }
     if (packageType == "package.json") {
       return JSON.parse(fs.readFileSync(path.resolve('./', packageType)))
     }
     if (packageType == "pom.xml") {
       fs.readFileSync(path.resolve('./', packageType), function(err, data) {
-        var json = JSON.parse(parser.toJson(data, {reversible: true}));
+        if (err) {
+          core.error(err)
+          core.setFailed(err.message)
+          process.exit(1)
+        }
+
+        var json = JSON.parse(parser.toJson(data, {reversible: true}))
         // The parsed pom pbject.
         core.info("OBJECT: " + JSON.stringify(json))
         return json
