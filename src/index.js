@@ -51,12 +51,11 @@ async function run() {
           core.setFailed(error.message)
         }
         core.endGroup()
-        await core.startGroup('Git Handling', async () => {
         await git.add('.')
         await git.commit(commitMessage.replace('{version}', `${app_version}`))
         await git.createTag(`${app_version}`)
         await git.push()
-        })
+        
       }
     })
 
