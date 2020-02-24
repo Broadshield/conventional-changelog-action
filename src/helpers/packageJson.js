@@ -31,6 +31,7 @@ module.exports = {
           process.exit(1)
         }
         json = JSON.parse(parser.toJson(data, { reversible: true }))
+        console.info(`${json['project']['artifactId']}`)
         // The parsed pom pbject.
         return json
       })
