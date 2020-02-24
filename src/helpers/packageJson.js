@@ -3,6 +3,7 @@ const fs = require('fs')
 // const pomParser = require("pom-parser")
 const core = require('@actions/core')
 const xml2js = require("xml2js")
+var pomParser = require("pom-parser");
 // var parser = require('xml2json');
 
 module.exports = {
@@ -25,23 +26,33 @@ module.exports = {
     if (packageType == "package.json") {
       return JSON.parse(fs.readFileSync(fpath, "utf8"))
     } else if (packageType == "pom.xml") {
-      var parser = new xml2js.Parser(/* options */);
-      const myData = fs.readFile(fpath, "utf8", function (err, data) {
-        core.debug('Inside read xml file function')
+      const myData = pomParser.parse({filePath: fpath}, function(err, pomResponse) {
         if (err) {
-          core.error(err)
-          core.setFailed(err.message)
+          core.error("ERROR: " + err)
+          return {}
+        } else {
+          return pomResponse.pomObject
         }
-        core.debug(`Parsing xml data: ${data}`)
-        const json = await parser.parseStringPromise(data).then(function (result) {
-          return result
-        }).catch(function (err) {
-          core.error(err.message)
-        })
-        core.debug(`Xml parsed to json: ${JSON.stringify(json)}`)
-        // The parsed pom pbject.
-        return json
       })
+
+      // var parser = new xml2js.Parser({trim: true});
+      // const myData = fs.readFile(fpath, "utf8", function (err, data) {
+      //   core.debug('Inside read xml file function')
+      //   if (err) {
+      //     core.error(err)
+      //     core.setFailed(err.message)
+      //   }
+      //   core.debug(`Parsing xml data: ${data}`)
+      //   const json = parser.parseStringPromise(data).then(function (result) {
+      //     return result
+      //   }).catch(function (err) {
+      //     core.error(err.message)
+      //   })
+      //   core.debug(`Xml parsed to json: ${JSON.stringify(json)}`)
+      //   // The parsed pom pbject.
+      //   return json
+      // })
+      core.debug(`Xml parsed to json: ${JSON.stringify(myData)}`)
       return myData
     } else {
       core.setFailed("Incorrect package Type")
