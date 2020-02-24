@@ -34,7 +34,7 @@ module.exports = {
         }
         core.debug(`Parsing xml data: ${data}`)
         const json = parser.parseString(data)
-        core.debug(`Xml parsed to json: ${json}`)
+        core.debug(`Xml parsed to json: ${JSON.stringify(json)}`)
         // The parsed pom pbject.
         return json
       })
