@@ -14,6 +14,7 @@ module.exports = {
    */
   get: (packageType) => {
     const fpath = path.resolve('./', packageType)
+    core.debug('Starting get function')
     core.info(`Package path: ${fpath}`)
     try {
       fs.accessSync(fpath, fs.constants.R_OK | fs.constants.W_OK)
@@ -25,12 +26,15 @@ module.exports = {
       return JSON.parse(fs.readFileSync(fpath, "utf8"))
     } else if (packageType == "pom.xml") {
       return fs.readFileSync(fpath, "utf8", function (err, data) {
+        core.debug('Inside read xml file function')
         if (err) {
           core.error(err)
           core.setFailed(err.message)
           process.exit(1)
         }
+        core.debug('Parsing xml data')
         json = xml2js.parseString(data)
+        core.debug('xml parsed to json')
         core.info(`packageJson: ${JSON.stringify(json)}`)
         // The parsed pom pbject.
         return json
@@ -48,10 +52,13 @@ module.exports = {
    * @return {*}
    */
   version: (packageJson, packageType) => {
+    core.debug('Starting version function')
     if (packageType == "package.json") {
+      core.debug(`version found in package.json is ${packageJson.version}`)
       // Update the package.json with the new version
       return packageJson.version
     } else {
+      core.debug(`version found in package.json is ${'0.0.2'}`)
       return '0.0.2' //packageJson.project.version
     }
   },
@@ -66,6 +73,7 @@ module.exports = {
    * @return {*}
    */
   bump: (packageJson, releaseType, packageType, tagPrefix) => {
+    core.debug('Starting bump function')
     if (packageType == "package.json") {
       let [major, minor, patch] = packageJson.version.split('.')
     } else {
