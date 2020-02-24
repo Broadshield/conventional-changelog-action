@@ -4,6 +4,7 @@ const fs = require('fs')
 const core = require('@actions/core')
 const xml2js = require("xml2js")
 var pomParser = require("pom-parser");
+const { promisify } = require('util')
 // var parser = require('xml2json');
 
 module.exports = {
@@ -26,7 +27,8 @@ module.exports = {
     if (packageType == "package.json") {
       return JSON.parse(fs.readFileSync(fpath, "utf8"))
     } else if (packageType == "pom.xml") {
-      const pomResponse = await pomParser.parse({ filePath: fpath }, async function (pomResponse) {
+      const getAsyncData = promisify(pomParser.parse)
+      var pomResponse = getAsyncData({ filePath: fpath }).then(function (pomResponse) {
         return pomResponse
       })
 
