@@ -46,7 +46,7 @@ module.exports = {
       return packageJson.version
     } else {
       let xpath = "/project/version"
-      let app_version = xmlDoc.evaluate(xpath, packageJson, null, XPathResult.ANY_TYPE, null)
+      let app_version = packageJson.evaluate(xpath, packageJson, null, XPathResult.ANY_TYPE, null)
       core.debug(`version found in pom.xml is ${app_version}`)
       return app_version
     }
