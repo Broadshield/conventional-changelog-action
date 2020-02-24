@@ -2,6 +2,7 @@ const path = require('path')
 const fs = require('fs')
 const core = require('@actions/core')
 const DOMParser = require('xmldom').DOMParser
+const xpath = require('xpath')
 
 module.exports = {
 
@@ -46,7 +47,9 @@ module.exports = {
       return packageJson.version
     } else {
       let xpath = "/project/version"
-      let app_version = packageJson.evaluate(xpath, packageJson, null, XPathResult.ANY_TYPE, null)
+      let result = xpath.evaluate(xpath, packageJson, null, xpath.XPathResult.ANY_TYPE, null)
+      let node = result.iterateNext()
+      var app_version = node.firstChild.data
       core.debug(`version found in pom.xml is ${app_version}`)
       return app_version
     }
