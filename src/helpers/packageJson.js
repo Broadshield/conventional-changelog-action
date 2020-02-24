@@ -26,11 +26,8 @@ module.exports = {
     if (packageType == "package.json") {
       return JSON.parse(fs.readFileSync(fpath, "utf8"))
     } else if (packageType == "pom.xml") {
-      const pomResponse = pomParser.parse({ filePath: fpath }).then(function (pomResponse) {
+      const pomResponse = await pomParser.parse({ filePath: fpath }, async function (pomResponse) {
         return pomResponse
-      }).catch(function (err) {
-        core.error("ERROR: " + err)
-        return {}
       })
 
       // var parser = new xml2js.Parser({trim: true});
