@@ -54,7 +54,7 @@ async function run() {
         // Add changed files to git
         await git.add('.')
         await git.commit(commitMessage.replace('{version}', `${app_version}`))
-        await git.createTag(`${jsonPackage.version}`)
+        await git.createTag(`${app_version}`)
         await git.push()
       }
     })
