@@ -26,14 +26,14 @@ async function run() {
         core.info(`Recommended release type: ${recommendation.releaseType}`)
         core.info(`Package type: ${packageType}`)
         core.info(`Tag prefix: ${tagPrefix}`)
-
+        core.startGroup('Update Version')
         try {
-          core.startGroup('packageJson.get()')
-          const jOut = packageJson.get(packageType)
-          core.endGroup()
+          
+          const packageData = packageJson.get(packageType)
+          
           // Bump the version in the package.json
           const jsonPackage = packageJson.bump(
-            jOut,
+            packageData,
             recommendation.releaseType,
             packageType,
             tagPrefix
@@ -50,13 +50,15 @@ async function run() {
           core.error(`Handling of ${packageType} failed`)
           core.setFailed(error.message)
         }
+        core.endGroup()
+        core.startGroup('Git Handling')
         core.info('Push all changes')
-
         // Add changed files to git
         await git.add('.')
         await git.commit(commitMessage.replace('{version}', `${app_version}`))
         await git.createTag(`${app_version}`)
         await git.push()
+        core.endGroup()
       }
     })
 

@@ -63,9 +63,10 @@ module.exports = {
    */
   bump: (packageJson, releaseType, packageType, tagPrefix) => {
     core.debug('Starting bump function')
-    let app_version = module.exports.version(packageJson,PackageType)
-      let [major, minor, patch] = app_version.split('.')
+    let app_version = module.exports.version(packageJson, packageType)
+    let [major, minor, patch] = app_version.split('.')
 
+    core.debug(`Version currently at: ${app_version}`)
     switch (releaseType) {
       case 'major':
         major = parseInt(major, 10) + 1
@@ -91,7 +92,7 @@ module.exports = {
       let version = node.iterateNext()
       version.textContent = `${tagPrefix}${major}.${minor}.${patch}`
     }
-
+    core.debug(`Version updated to: ${tagPrefix}${major}.${minor}.${patch}`)
     return packageJson
   },
 
