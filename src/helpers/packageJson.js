@@ -1,11 +1,6 @@
 const path = require('path')
 const fs = require('fs')
-// const pomParser = require("pom-parser")
 const core = require('@actions/core')
-const xml2js = require("xml2js")
-var pomParser = require("pom-parser");
-const { promisify } = require('util')
-// var parser = require('xml2json');
 
 module.exports = {
 
@@ -27,33 +22,10 @@ module.exports = {
     if (packageType == "package.json") {
       return JSON.parse(fs.readFileSync(fpath, "utf8"))
     } else if (packageType == "pom.xml") {
-      let pomResponse = await getAsyncData({ filePath: fpath }, async (err, pomResponse) => {
-        if (err) {
-          core.error(err)
-          core.setFailed(err.message)
-        }
-        return pomResponse
-      })
-
-      // var parser = new xml2js.Parser({trim: true});
-      // const myData = fs.readFile(fpath, "utf8", function (err, data) {
-      //   core.debug('Inside read xml file function')
-      //   if (err) {
-      //     core.error(err)
-      //     core.setFailed(err.message)
-      //   }
-      //   core.debug(`Parsing xml data: ${data}`)
-      //   const json = parser.parseStringPromise(data).then(function (result) {
-      //     return result
-      //   }).catch(function (err) {
-      //     core.error(err.message)
-      //   })
-      //   core.debug(`Xml parsed to json: ${JSON.stringify(json)}`)
-      //   // The parsed pom pbject.
-      //   return json
-      // })
-      core.debug(`Xml parsed to json: ${JSON.stringify(pomResponse.pomObject)}`)
-      return pomResponse.pomObject
+      let raw = fs.readFileSync(fpath, "utf8")
+      let oParser = new DOMParser()
+      let xml = oParser.parseFromString(raw.toString(), "application/xml")
+      return xml
     } else {
       core.setFailed("Incorrect package Type")
     }
@@ -72,8 +44,10 @@ module.exports = {
       // Update the package.json with the new version
       return packageJson.version
     } else {
-      core.debug(`version found in package.json is ${'0.0.2'}`)
-      return '0.0.2' //packageJson.project.version
+      let xpath = "/project/version"
+      let app_version = xmlDoc.evaluate(xpath, packageJson, null, XPathResult.ANY_TYPE, null)
+      core.debug(`version found in pom.xml is ${app_version}`)
+      return app_version
     }
   },
 
@@ -88,16 +62,8 @@ module.exports = {
    */
   bump: (packageJson, releaseType, packageType, tagPrefix) => {
     core.debug('Starting bump function')
-    if (packageType == "package.json") {
-      let [major, minor, patch] = packageJson.version.split('.')
-    } else {
-      try {
-        let [major, minor, patch] = packageJson.project.version.split('.')
-      } catch (err) {
-        let [major, minor, patch] = "0.0.2".split('.')
-      }
-    }
-
+    let app_version = module.exports.version(packageJson,PackageType)
+      let [major, minor, patch] = app_version.split('.')
 
     switch (releaseType) {
       case 'major':
@@ -119,7 +85,10 @@ module.exports = {
       // Update the package.json with the new version
       packageJson.version = `${tagPrefix}${major}.${minor}.${patch}`
     } else {
-      //packageJson.project.version = `${tagPrefix}${major}.${minor}.${patch}`
+      let xpath = "/project/version"
+      let node = xmlDoc.evaluate(xpath, packageJson, null, XPathResult.ANY_TYPE, null)
+      let version = node.iterateNext()
+      version.textContent = `${tagPrefix}${major}.${minor}.${patch}`
     }
 
     return packageJson
@@ -136,9 +105,8 @@ module.exports = {
     if (packageType == "package.json") {
       fs.writeFileSync(path.resolve('./', packageType), JSON.stringify(packageJson, null, 2))
     } else if (packageType == "pom.xml") {
-      const builder = new xml2js.Builder()
-      const xml = builder.buildObject(packageJson)
-      core.info(xml)
+      var oSerializer = new XMLSerializer()
+      var xml = oSerializer.serializeToString(packageJson)
       fs.writeFileSync(path.resolve('./', packageType), xml, function (err, data) {
         if (err) {
           core.error(err)
