@@ -35,7 +35,8 @@ async function run() {
             packageType,
             tagPrefix
           )
-
+          core.info(`jOut: ${JSON.stringify(jOut)}`)
+          core.info(`jsonPackage: ${JSON.stringify(jsonPackage)}`)
           // Update the package.json file
           packageJson.update(jsonPackage, packageType)
           const app_version = packageJson.version(jsonPackage, packageType)
