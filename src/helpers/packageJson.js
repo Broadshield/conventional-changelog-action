@@ -33,7 +33,7 @@ module.exports = {
           core.setFailed(err.message)
         }
         core.debug(`Parsing xml data: ${data}`)
-        const json = parser.parseStringPromise(data).then(function (result) {
+        const json = await parser.parseStringPromise(data).then(function (result) {
           return result
         }).catch(function (err) {
           core.error(err.message)
