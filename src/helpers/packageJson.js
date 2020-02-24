@@ -27,8 +27,11 @@ module.exports = {
     if (packageType == "package.json") {
       return JSON.parse(fs.readFileSync(fpath, "utf8"))
     } else if (packageType == "pom.xml") {
-      const getAsyncData = promisify(pomParser.parse)
-      var pomResponse = getAsyncData({ filePath: fpath }).then(function (pomResponse) {
+      let pomResponse = await getAsyncData({ filePath: fpath }, async (err, pomResponse) => {
+        if (err) {
+          core.error(err)
+          core.setFailed(err.message)
+        }
         return pomResponse
       })
 
