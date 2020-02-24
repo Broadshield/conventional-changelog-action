@@ -3,7 +3,7 @@ const fs = require('fs')
 // const pomParser = require("pom-parser")
 const core = require('@actions/core')
 const xml2js = require("xml2js")
-var parser = require('xml2json');
+// var parser = require('xml2json');
 
 module.exports = {
 
@@ -30,7 +30,7 @@ module.exports = {
           core.setFailed(err.message)
           process.exit(1)
         }
-        json = JSON.parse(parser.toJson(data, { reversible: true }))
+        json = JSON.parse(xml2js.parseString(data, { reversible: true }))
         core.info(`packageJson: ${JSON.stringify(json)}`)
         // The parsed pom pbject.
         return json
