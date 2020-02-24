@@ -32,9 +32,9 @@ module.exports = {
           core.error(err)
           core.setFailed(err.message)
         }
-        core.debug('Parsing xml data')
+        core.debug(`Parsing xml data: ${data}`)
         const json = parser.parseString(data)
-        core.debug('xml parsed to json')
+        core.debug(`Xml parsed to json: ${json}`)
         // The parsed pom pbject.
         return json
       })
@@ -76,7 +76,11 @@ module.exports = {
     if (packageType == "package.json") {
       let [major, minor, patch] = packageJson.version.split('.')
     } else {
-      let [major, minor, patch] = packageJson.project.version.split('.')
+      try {
+        let [major, minor, patch] = packageJson.project.version.split('.')
+      } catch (err) {
+        let [major, minor, patch] = "0.0.2".split('.')
+      }
     }
 
 
