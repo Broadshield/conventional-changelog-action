@@ -30,7 +30,7 @@ module.exports = {
           core.setFailed(err.message)
           process.exit(1)
         }
-        json = JSON.parse(xml2js.parseString(data, { reversible: true }))
+        json = xml2js.parseString(data)
         core.info(`packageJson: ${JSON.stringify(json)}`)
         // The parsed pom pbject.
         return json

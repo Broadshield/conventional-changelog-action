@@ -28,6 +28,7 @@ async function run() {
 
         try {
           const jOut = packageJson.get(packageType)
+          core.info(`jOut: ${JSON.stringify(jOut)}`)
           // Bump the version in the package.json
           const jsonPackage = packageJson.bump(
             jOut,
@@ -35,7 +36,7 @@ async function run() {
             packageType,
             tagPrefix
           )
-          core.info(`jOut: ${JSON.stringify(jOut)}`)
+          
           core.info(`jsonPackage: ${JSON.stringify(jsonPackage)}`)
           // Update the package.json file
           packageJson.update(jsonPackage, packageType)
