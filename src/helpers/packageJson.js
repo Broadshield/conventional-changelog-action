@@ -52,7 +52,7 @@ module.exports = {
       // Update the package.json with the new version
       return packageJson.version
     } else {
-      return packageJson.project.version
+      return '0.0.2' //packageJson.project.version
     }
   },
 
