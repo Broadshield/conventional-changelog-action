@@ -26,11 +26,15 @@ module.exports = {
     if (packageType == "package.json") {
       return JSON.parse(fs.readFileSync(fpath, "utf8"))
     } else if (packageType == "pom.xml") {
-      const myData = pomParser.parse({filePath: fpath}, function(err, pomResponse) {
+      var myData = pomParser.parse({filePath: fpath}, function(err, pomResponse) {
         if (err) {
           core.error("ERROR: " + err)
           return {}
         } else {
+          // The original pom xml that was loaded is provided.
+          console.log("XML: " + pomResponse.pomXml);
+          // The parsed pom pbject.
+          console.log("OBJECT: " + JSON.stringify(pomResponse.pomObject));
           return pomResponse.pomObject
         }
       })
