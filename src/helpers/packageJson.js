@@ -93,7 +93,7 @@ module.exports = {
       // Update the package.json with the new version
       packageJson.version = `${tagPrefix}${major}.${minor}.${patch}`
     } else {
-      packageJson.project.version = `${tagPrefix}${major}.${minor}.${patch}`
+      //packageJson.project.version = `${tagPrefix}${major}.${minor}.${patch}`
     }
 
     return packageJson
