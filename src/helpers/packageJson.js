@@ -33,7 +33,7 @@ module.exports = {
           core.setFailed(err.message)
         }
         core.debug('Parsing xml data')
-        const json = parser.parseString(myData)
+        const json = parser.parseString(data)
         core.debug('xml parsed to json')
         // The parsed pom pbject.
         return json
