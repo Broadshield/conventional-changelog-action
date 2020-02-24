@@ -29,13 +29,13 @@ module.exports = {
       var myData = pomParser.parse({filePath: fpath}, function(err, pomResponse) {
         if (err) {
           core.error("ERROR: " + err)
-          return {}
+          // return {}
         } else {
           // The original pom xml that was loaded is provided.
           console.log("XML: " + pomResponse.pomXml);
           // The parsed pom pbject.
           console.log("OBJECT: " + JSON.stringify(pomResponse.pomObject));
-          return pomResponse.pomObject
+          // return pomResponse.pomObject
         }
       })
 
@@ -56,8 +56,8 @@ module.exports = {
       //   // The parsed pom pbject.
       //   return json
       // })
-      core.debug(`Xml parsed to json: ${JSON.stringify(myData)}`)
-      return myData
+      core.debug(`Xml parsed to json: ${JSON.stringify(myData.pomObject)}`)
+      return myData.pomObject
     } else {
       core.setFailed("Incorrect package Type")
     }
