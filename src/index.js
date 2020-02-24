@@ -39,7 +39,7 @@ async function run() {
           core.info(`jsonPackage: ${JSON.stringify(jsonPackage)}`)
           // Update the package.json file
           packageJson.update(jsonPackage, packageType)
-          const app_version = packageJson.version(jsonPackage, packageType)
+          const app_version = '0.0.2' //packageJson.version(jsonPackage, packageType)
           core.info(`New version: ${app_version}`)
 
           // Generate the changelog
