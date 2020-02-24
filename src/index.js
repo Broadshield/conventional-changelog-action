@@ -56,7 +56,7 @@ async function run() {
         await git.commit(commitMessage.replace('{version}', `${app_version}`))
         await git.createTag(`${app_version}`)
         await git.push()
-        }
+        })
       }
     })
 
