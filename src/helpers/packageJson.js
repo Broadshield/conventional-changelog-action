@@ -30,7 +30,6 @@ module.exports = {
         if (err) {
           core.error(err)
           core.setFailed(err.message)
-          process.exit(1)
         }
         core.debug('Parsing xml data')
         json = xml2js.parseString(data)
@@ -41,7 +40,6 @@ module.exports = {
       })
     } else {
       core.setFailed("Incorrect package Type")
-      process.exit(1)
     }
   },
   /**
@@ -79,7 +77,7 @@ module.exports = {
     } else {
       let [major, minor, patch] = packageJson.project.version.split('.')
     }
-    
+
 
     switch (releaseType) {
       case 'major':
@@ -125,9 +123,9 @@ module.exports = {
         if (err) {
           core.error(err)
           core.setFailed(err.message)
-          process.exit(1)
+        } else {
+          console.log("successfully written our update xml to file")
         }
-        console.log("successfully written our update xml to file")
 
       })
     }
