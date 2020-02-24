@@ -26,7 +26,7 @@ module.exports = {
     if (packageType == "package.json") {
       return JSON.parse(fs.readFileSync(fpath, "utf8"))
     } else if (packageType == "pom.xml") {
-      var myData = pomParser.parse({filePath: fpath}, function(err, pomResponse) {
+      pomParser.parse({filePath: fpath}, function(err, pomResponse) {
         if (err) {
           core.error("ERROR: " + err)
           // return {}
@@ -56,8 +56,8 @@ module.exports = {
       //   // The parsed pom pbject.
       //   return json
       // })
-      core.debug(`Xml parsed to json: ${JSON.stringify(myData.pomObject)}`)
-      return myData.pomObject
+      core.debug(`Xml parsed to json: ${JSON.stringify(pomResponse.pomObject)}`)
+      return pomResponse.pomObject
     } else {
       core.setFailed("Incorrect package Type")
     }
