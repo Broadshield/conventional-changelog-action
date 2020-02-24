@@ -31,7 +31,6 @@ async function run() {
           core.startGroup('packageJson.get()')
           const jOut = packageJson.get(packageType)
           core.endGroup()
-          core.info(`jOut: ${JSON.stringify(jOut)}`)
           // Bump the version in the package.json
           const jsonPackage = packageJson.bump(
             jOut,
@@ -40,14 +39,13 @@ async function run() {
             tagPrefix
           )
           
-          core.info(`jsonPackage: ${JSON.stringify(jsonPackage)}`)
           // Update the package.json file
           packageJson.update(jsonPackage, packageType)
-          app_version = '0.0.2' //packageJson.version(jsonPackage, packageType)
+          app_version = packageJson.version(jsonPackage, packageType)
           core.info(`New version: ${app_version}`)
 
           // Generate the changelog
-          await generateChangelog(tagPrefix, preset, jsonPackage, outputFile, releaseCount)
+          await generateChangelog(tagPrefix, preset, app_version, outputFile, releaseCount)
         } catch (error) {
           core.error(`Handling of ${packageType} failed`)
           core.setFailed(error.message)

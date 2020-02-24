@@ -1,7 +1,7 @@
 const path = require('path')
 const fs = require('fs')
 const core = require('@actions/core')
-const DOMParser = require('xmldom')
+const DOMParser = require('xmldom').DOMParser
 
 module.exports = {
 
