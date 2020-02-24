@@ -26,9 +26,9 @@ module.exports = {
     if (packageType == "package.json") {
       return JSON.parse(fs.readFileSync(fpath, "utf8"))
     } else if (packageType == "pom.xml") {
-      const pomResponse = pomParser.parse({filePath: fpath}).then(function(pomResponse) {
-        return pomResponse.pomObject
-      }).catch(function (response) {
+      const pomResponse = pomParser.parse({ filePath: fpath }).then(function (pomResponse) {
+        return pomResponse
+      }).catch(function (err) {
         core.error("ERROR: " + err)
         return {}
       })
