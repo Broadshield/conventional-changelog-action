@@ -25,20 +25,20 @@ module.exports = {
     if (packageType == "package.json") {
       return JSON.parse(fs.readFileSync(fpath, "utf8"))
     } else if (packageType == "pom.xml") {
-      const myData = fs.readFileSync(fpath, "utf8", function (err, data) {
+      var parser = new xml2js.Parser(/* options */);
+      const myData = fs.readFile(fpath, "utf8", function (err, data) {
         core.debug('Inside read xml file function')
         if (err) {
           core.error(err)
           core.setFailed(err.message)
         }
-        
-        // The parsed pom pbject.
-        return data
-      })
         core.debug('Parsing xml data')
-        const json = xml2js.parseString(myData)
+        const json = parser.parseString(myData)
         core.debug('xml parsed to json')
+        // The parsed pom pbject.
         return json
+      })
+      return myData
     } else {
       core.setFailed("Incorrect package Type")
     }

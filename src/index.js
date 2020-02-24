@@ -28,7 +28,9 @@ async function run() {
         core.info(`Tag prefix: ${tagPrefix}`)
 
         try {
+          core.startGroup('packageJson.get()')
           const jOut = packageJson.get(packageType)
+          core.endGroup()
           core.info(`jOut: ${JSON.stringify(jOut)}`)
           // Bump the version in the package.json
           const jsonPackage = packageJson.bump(
