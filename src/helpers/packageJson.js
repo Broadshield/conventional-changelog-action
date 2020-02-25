@@ -113,15 +113,7 @@ module.exports = {
     } else if (packageType == "pom.xml") {
       var oSerializer = new XMLSerializer()
       var xml = oSerializer.serializeToString(packageJson)
-      fs.writeFileSync(path.resolve('./', packageType), xml, function (err, data) {
-        if (err) {
-          core.error(err)
-          core.setFailed(err.message)
-        } else {
-          console.log("successfully written our update xml to file")
-        }
-
-      })
+      fs.writeFileSync(path.resolve('./', packageType), xml)
     }
   },
 
