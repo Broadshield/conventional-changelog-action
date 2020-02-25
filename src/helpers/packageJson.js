@@ -2,6 +2,7 @@ const path = require('path')
 const fs = require('fs')
 const core = require('@actions/core')
 const DOMParser = require('xmldom').DOMParser
+const XMLSerializer = require('xmldom').XMLSerializer
 const xpath = require('xpath')
 
 module.exports = {
@@ -46,9 +47,8 @@ module.exports = {
       // Update the package.json with the new version
       return packageJson.version
     } else {
-      let result = xpath.select("/project/version", packageJson, null, xpath.XPathResult.ANY_TYPE, null)
-      let node = result.iterateNext()
-      var app_version = node.firstChild.data
+      let nodes = xpath.select("/project/version", packageJson)
+      var app_version = nodes[0].firstChild.data
       core.debug(`version found in pom.xml is ${app_version}`)
       return app_version
     }
@@ -89,10 +89,8 @@ module.exports = {
       // Update the package.json with the new version
       packageJson.version = `${tagPrefix}${major}.${minor}.${patch}`
     } else {
-      let xpath = "/project/version"
-      let node = xmlDoc.evaluate(xpath, packageJson, null, XPathResult.ANY_TYPE, null)
-      let version = node.iterateNext()
-      version.textContent = `${tagPrefix}${major}.${minor}.${patch}`
+      var nodes = xpath.select("/project/version", packageJson)
+      nodes[0].firstChild.data = `${tagPrefix}${major}.${minor}.${patch}`
     }
     core.debug(`Version updated to: ${tagPrefix}${major}.${minor}.${patch}`)
     return packageJson
