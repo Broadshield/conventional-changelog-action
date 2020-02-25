@@ -49,17 +49,12 @@ module.exports = {
       // Update the package.json with the new version
       return packageJson.version
     } else {
-      core.debug("packageJson: " + packageJson)
-      var firstresult = xpath.select(
-        "/",
-        packageJson
-      )
-      core.debug("Firstresult: " + firstresult.toString())
 
+      let defNS = packageJson.root().namespace().href()
       var result = xpath.evaluate(
         "/",            // xpathExpression
         packageJson,                        // contextNode
-        null,                       // namespaceResolver
+        defNS,                       // namespaceResolver
         xpath.XPathResult.ANY_TYPE, // resultType
         null                        // result
       )
@@ -114,10 +109,11 @@ module.exports = {
       // Update the package.json with the new version
       packageJson.version = `${tagPrefix}${major}.${minor}.${patch}`
     } else {
+      let defNS = packageJson.root().namespace().href()
       var result = xpath.evaluate(
         "//project/version",            // xpathExpression
         packageJson,                        // contextNode
-        null,                       // namespaceResolver
+        defNS,                       // namespaceResolver
         xpath.XPathResult.ANY_TYPE, // resultType
         null                        // result
       )
