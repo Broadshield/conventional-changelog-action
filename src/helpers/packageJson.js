@@ -72,22 +72,25 @@ module.exports = {
     core.debug('Starting bump function')
     let app_version = module.exports.version(packageJson, packageType)
     let [major, minor, patch] = app_version.split('.')
+    major = parseInt(major.match(/\d+/g), 10)
+    minor = parseInt(minor.match(/\d+/g), 10)
+    patch = parseInt(patch.match(/\d+/g), 10)
 
     core.debug(`Version currently at: ${app_version}`)
     switch (releaseType) {
       case 'major':
-        major = parseInt(major, 10) + 1
+        major++
         minor = 0
         patch = 0
         break
 
       case 'minor':
-        minor = parseInt(minor, 10) + 1
+        minor++
         patch = 0
         break
 
       default:
-        patch = parseInt(patch, 10) + 1
+        patch++
     }
 
     if (packageType == "package.json") {
