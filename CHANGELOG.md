@@ -1,4 +1,8 @@
-## [v0.0.9](https://github.com/TriPSs/conventional-changelog-action/compare/v0.0.8...v0.0.9) (2020-02-25)
+## [v0.0.10](https://github.com/TriPSs/conventional-changelog-action/compare/v0.0.9...v0.0.10) (2020-02-25)
+
+
+
+## [0.0.9](https://github.com/TriPSs/conventional-changelog-action/compare/v0.0.8...v0.0.9) (2020-02-25)
 
 
 
@@ -11,10 +15,6 @@
 
 
 ## [0.0.6](https://github.com/TriPSs/conventional-changelog-action/compare/v0.0.4...v0.0.6) (2020-02-25)
-
-
-
-## [0.0.4](https://github.com/TriPSs/conventional-changelog-action/compare/v0.0.3...v0.0.4) (2020-02-25)
 
 
 
