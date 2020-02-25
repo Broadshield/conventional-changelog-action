@@ -114,10 +114,11 @@ module.exports = {
       var oSerializer = new XMLSerializer()
       var xml = oSerializer.serializeToString(packageJson)
       core.debug("Starting to write updated file")
-      fs.writeFileSync(path.resolve('./', packageType), xml)
-      let rxml = module.exports.get(packageType)
-      let v = module.exports.version(rxml, packageType)
-      core.debug(`Version in file is ${v}`)
+      await fs.writeFileSync(path.resolve('./', packageType), xml)
+      let rxml = await module.exports.get(packageType)
+      let v = await module.exports.version(rxml, packageType)
+      let v2 = await module.exports.version(packageJson, packageType)
+      core.debug(`Version in file is ${v} but version passed in is ${v2}`)
       core.debug("Finished update")
     }
   },
