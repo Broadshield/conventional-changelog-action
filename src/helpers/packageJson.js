@@ -124,7 +124,7 @@ module.exports = {
           }
         })
         core.debug("File renamed")
-        await git.add('pom.xml')
+        git.add('pom.xml')
       }
       if (process.env.ACTIONS_STEP_DEBUG) {
         let rxml = module.exports.get(packageType)
