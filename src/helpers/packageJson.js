@@ -27,7 +27,7 @@ module.exports = {
       return JSON.parse(fs.readFileSync(fpath, "utf8"))
     } else if (packageType == "pom.xml") {
       let raw = fs.readFileSync(fpath, "utf8")
-      var xml = new dom().parseFromString(raw)
+      var xml = new dom().parseFromString(raw, 'text/xml')
       core.debug('Ending get function')
       return xml
     } else {
