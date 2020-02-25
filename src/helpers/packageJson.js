@@ -28,6 +28,8 @@ module.exports = {
     } else if (packageType == "pom.xml") {
       let raw = fs.readFileSync(fpath, "utf8")
       var xml = new dom().parseFromString(raw, 'text/xml')
+      core.debug("DocumentElement is:" + xml.documentElement)
+      core.debug("DocumentElement.firstChild is:" + xml.documentElement.firstChild)
       core.debug('Ending get function')
       return xml
     } else {
@@ -52,7 +54,7 @@ module.exports = {
 
       let defNS = packageJson.root().namespace().href()
       var result = xpath.evaluate(
-        "/",            // xpathExpression
+        `/*[local-name()="project"]/*[local-name()="version"]`,            // xpathExpression
         packageJson,                        // contextNode
         defNS,                       // namespaceResolver
         xpath.XPathResult.ANY_TYPE, // resultType
@@ -111,7 +113,7 @@ module.exports = {
     } else {
       let defNS = packageJson.root().namespace().href()
       var result = xpath.evaluate(
-        "//project/version",            // xpathExpression
+        `/*[local-name()="project"]/*[local-name()="version"]`,            // xpathExpression
         packageJson,                        // contextNode
         defNS,                       // namespaceResolver
         xpath.XPathResult.ANY_TYPE, // resultType
