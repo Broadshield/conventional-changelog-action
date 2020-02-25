@@ -49,14 +49,15 @@ module.exports = {
       // Update the package.json with the new version
       return packageJson.version
     } else {
+      core.debug("packageJson: " + packageJson)
       var firstresult = xpath.select(
         "/",
         packageJson
       )
-      firstresult.forEach(i => core.debug(`Is version ${i.data}`))
+      core.debug("Firstresult: " + firstresult.toString())
 
       var result = xpath.evaluate(
-        "//project",            // xpathExpression
+        "/",            // xpathExpression
         packageJson,                        // contextNode
         null,                       // namespaceResolver
         xpath.XPathResult.ANY_TYPE, // resultType
