@@ -48,11 +48,20 @@ module.exports = {
       return packageJson.version
     } else {
       core.info(`XMLDOM: ${packageJson.toString()}`)
-      var nodes = xpath.select("//project", packageJson)
-      core.info("Node: " + nodes[0].toString())
-      var app_version = nodes[0].firstChild.data
-      core.debug(`version found in pom.xml is ${app_version}`)
-      return app_version
+      var result = xpath.evaluate(
+        "/package/version",            // xpathExpression
+        packageJson,                        // contextNode
+        null,                       // namespaceResolver
+        xpath.XPathResult.ANY_TYPE, // resultType
+        null                        // result
+      )
+      node = result.iterateNext()
+      if (node) {
+        core.info("Node: " + node.toString())
+        var app_version = node.firstChild.data
+        core.debug(`version found in pom.xml is ${app_version}`)
+        return app_version
+      }
     }
   },
 
@@ -91,8 +100,17 @@ module.exports = {
       // Update the package.json with the new version
       packageJson.version = `${tagPrefix}${major}.${minor}.${patch}`
     } else {
-      var nodes = xpath.select("/project/version", packageJson)
-      nodes[0].firstChild.data = `${tagPrefix}${major}.${minor}.${patch}`
+      var result = xpath.evaluate(
+        "/package/version",            // xpathExpression
+        packageJson,                        // contextNode
+        null,                       // namespaceResolver
+        xpath.XPathResult.ANY_TYPE, // resultType
+        null                        // result
+      )
+      node = result.iterateNext();
+      if (node) {
+        node.firstChild.data = `${tagPrefix}${major}.${minor}.${patch}`
+      }      
     }
     core.debug(`Version updated to: ${tagPrefix}${major}.${minor}.${patch}`)
     return packageJson
