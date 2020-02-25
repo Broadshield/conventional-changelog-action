@@ -93,31 +93,8 @@ module.exports = {
       // Update the package.json with the new version
       packageJson.version = `${tagPrefix}${major}.${minor}.${patch}`
     } else {
-      var node = null
-      try {
-        core.debug("elementsbyname:" + packageJson.getElementsByTagName("project")[0].getElementsByTagName("version")[0].toString())
-
-      } catch (err2) {
-        core.error("Error:" + err2.message)
-      }
-
-      try {
-        var node = select(`/pom:project/pom:version`, packageJson)
-        for (let i = 0; i < node.length; i++) {
-          core.debug("Node " + i + ": " + node[i].childNodes[0].nodeValue)
-        }
-      } catch (err1) {
-        core.error(err1.message)
-      }
-
-      // var node  = result.first()
-      try {
-        core.debug("Result NodeValue: " + node[0].childNodes[0].nodeValue)
-        core.debug("Result NodeValue: " + node[0].childNodes[0].data)
-        node[0].childNodes[0].nodeValue = `${tagPrefix}${major}.${minor}.${patch}`
-      } finally {
-
-      }
+      var node = select(`/pom:project/pom:version`, packageJson)
+      node[0].childNodes[0].nodeValue = `${tagPrefix}${major}.${minor}.${patch}`
     }
     core.debug(`Version updated to: ${tagPrefix}${major}.${minor}.${patch}`)
     return packageJson
