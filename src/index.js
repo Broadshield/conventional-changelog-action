@@ -40,7 +40,7 @@ async function run() {
           )
           
           // Update the package.json file
-          packageJson.update(jsonPackage, packageType)
+          await packageJson.update(jsonPackage, packageType)
           app_version = packageJson.version(jsonPackage, packageType)
           core.info(`New version: ${app_version}`)
 
