@@ -32,7 +32,7 @@ async function run() {
           const packageData = await packageJson.get(packageType)
           
           // Bump the version in the package.json
-          const packageData = await packageJson.bump(
+          packageData = await packageJson.bump(
             packageData,
             recommendation.releaseType,
             packageType,
