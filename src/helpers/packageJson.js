@@ -53,7 +53,7 @@ module.exports = {
         "/project",
         packageJson
       )
-      core.debug(`Is version ${firstresult[0].toString()}`)
+      core.debug(`Is version ${firstresult.toString()}`)
       var result = xpath.evaluate(
         "//project",            // xpathExpression
         packageJson,                        // contextNode
