@@ -46,13 +46,13 @@ module.exports = {
   version: (packageJson, packageType) => {
     core.debug('Starting version function')
     if (packageType == "package.json") {
-      core.debug(`version found in package.json is ${packageJson.version}`)
+      core.debug(`version found in module.version is ${packageJson.version}`)
       // Update the package.json with the new version
       core.debug('Ending version function')
       return packageJson.version
     } else {
       var app_version = select(`/pom:project/pom:version/text()`, packageJson)[0].nodeValue
-      core.debug(`version found in pom.xml is ${app_version}`)
+      core.debug(`version found in module.version is ${app_version}`)
       core.debug('Ending version function')
       return app_version
     }
