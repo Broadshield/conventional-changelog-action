@@ -29,10 +29,10 @@ async function run() {
         
         try {
           
-          const packageData = packageJson.get(packageType)
+          const packageData = await packageJson.get(packageType)
           
           // Bump the version in the package.json
-          const jsonPackage = packageJson.bump(
+          const packageData = await packageJson.bump(
             packageData,
             recommendation.releaseType,
             packageType,
@@ -40,8 +40,8 @@ async function run() {
           )
           
           // Update the package.json file
-          await packageJson.update(jsonPackage, packageType)
-          app_version = packageJson.version(jsonPackage, packageType)
+          await packageJson.update(packageData, packageType)
+          app_version = await packageJson.version(packageData, packageType)
           core.info(`New version: ${app_version}`)
 
           // Generate the changelog
