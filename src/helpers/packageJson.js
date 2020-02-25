@@ -52,7 +52,7 @@ module.exports = {
     } else {
       
       var result = xpath.evaluate(
-        "//project",            // xpathExpression
+        "/",            // xpathExpression
         packageJson,                        // contextNode
         null,                       // namespaceResolver
         xpath.XPathResult.ANY_TYPE, // resultType
