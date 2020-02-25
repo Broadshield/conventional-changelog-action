@@ -95,7 +95,7 @@ module.exports = {
     } else {
       
       var result = select(`/pom:project/pom:version/`, packageJson)
-      var node  = result.iterateNext()
+      var node  = result.first()
 
       core.debug("Result NodeValue: " + node.nodeValue)
       core.debug("Result NodeValue: " + node.data)
