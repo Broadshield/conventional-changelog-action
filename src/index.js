@@ -26,7 +26,7 @@ async function run() {
         core.info(`Recommended release type: ${recommendation.releaseType}`)
         core.info(`Package type: ${packageType}`)
         core.info(`Tag prefix: ${tagPrefix}`)
-        core.startGroup('Update Version')
+        
         try {
           
           const packageData = packageJson.get(packageType)
@@ -50,7 +50,7 @@ async function run() {
           core.error(`Handling of ${packageType} failed`)
           core.setFailed(error.message)
         }
-        core.endGroup()
+        
         await git.add('.')
         await git.commit(commitMessage.replace('{version}', `${app_version}`))
         await git.createTag(`${app_version}`)

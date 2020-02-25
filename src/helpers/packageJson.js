@@ -47,7 +47,7 @@ module.exports = {
       // Update the package.json with the new version
       return packageJson.version
     } else {
-      let nodes = xpath.select("//project/version", packageJson)
+      var nodes = xpath.select("//project", packageJson)
       core.info("Node: " + nodes[0].toString())
       var app_version = nodes[0].firstChild.data
       core.debug(`version found in pom.xml is ${app_version}`)
