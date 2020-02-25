@@ -48,22 +48,9 @@ module.exports = {
       // Update the package.json with the new version
       return packageJson.version
     } else {
-      var result1 = xpath.evaluate(
-        "/",            // xpathExpression
-        packageJson,                        // contextNode
-        null,                       // namespaceResolver
-        xpath.XPathResult.ANY_TYPE, // resultType
-        null                        // result
-      )
-      node = result1.iterateNext()
-      while (node) {
-        core.debug(node.localName + ": " + node.firstChild.data);
-        core.debug("Node: " + node.toString());
-     
-        node = result1.iterateNext();
-    }
+      
       var result = xpath.evaluate(
-        "/package/version",            // xpathExpression
+        "/project/version",            // xpathExpression
         packageJson,                        // contextNode
         null,                       // namespaceResolver
         xpath.XPathResult.ANY_TYPE, // resultType
@@ -116,7 +103,7 @@ module.exports = {
       packageJson.version = `${tagPrefix}${major}.${minor}.${patch}`
     } else {
       var result = xpath.evaluate(
-        "/package/version",            // xpathExpression
+        "/project/version",            // xpathExpression
         packageJson,                        // contextNode
         null,                       // namespaceResolver
         xpath.XPathResult.ANY_TYPE, // resultType
