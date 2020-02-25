@@ -23,13 +23,16 @@ module.exports = {
       core.error('no access! ' + packageType)
     }
     if (packageType == "package.json") {
+      core.debug('Ending get function')
       return JSON.parse(fs.readFileSync(fpath, "utf8"))
     } else if (packageType == "pom.xml") {
       let raw = fs.readFileSync(fpath, "utf8")
       let oParser = new DOMParser()
       var xml = oParser.parseFromString(raw.toString(), "application/xml")
+      core.debug('Ending get function')
       return xml
     } else {
+      core.debug('Ending get function')
       core.setFailed("Incorrect package Type")
     }
   },
@@ -50,7 +53,7 @@ module.exports = {
     } else {
       
       var result = xpath.evaluate(
-        "//project",            // xpathExpression
+        "/",            // xpathExpression
         packageJson,                        // contextNode
         null,                       // namespaceResolver
         xpath.XPathResult.ANY_TYPE, // resultType
@@ -65,6 +68,7 @@ module.exports = {
         return app_version
         }
       }
+      core.debug('Ending version function')
     }
   },
 
