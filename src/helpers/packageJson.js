@@ -51,7 +51,7 @@ module.exports = {
       return packageJson.version
     } else {
       var result = xpath.evaluate(
-        "/",            // xpathExpression
+        "project",            // xpathExpression
         packageJson,                        // contextNode
         null,                       // namespaceResolver
         xpath.XPathResult.ANY_TYPE, // resultType
