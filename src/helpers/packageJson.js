@@ -47,6 +47,7 @@ module.exports = {
       // Update the package.json with the new version
       return packageJson.version
     } else {
+      core.info(`XMLDOM: ${packageJson.toString()}`)
       var nodes = xpath.select("//project", packageJson)
       core.info("Node: " + nodes[0].toString())
       var app_version = nodes[0].firstChild.data
