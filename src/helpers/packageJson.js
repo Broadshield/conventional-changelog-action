@@ -114,7 +114,13 @@ module.exports = {
       var oSerializer = new XMLSerializer()
       var xml = oSerializer.serializeToString(packageJson)
       core.debug("Starting to write updated file")
-      fs.writeFileSync(path.resolve('./', packageType), xml)
+      fs.writeFileSync(path.resolve('./', packageType), xml, function (error) {
+        if (error) {
+          core.error("File Write Error")
+        } else {
+          core.debug("File completed writing fine")
+        }
+      })
       let rxml = module.exports.get(packageType)
       let v = module.exports.version(rxml, packageType)
       let v2 = module.exports.version(packageJson, packageType)

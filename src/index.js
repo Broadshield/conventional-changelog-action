@@ -40,15 +40,15 @@ async function run() {
           )
 
           // Update the package.json or pom.xml file
-          packageJson.update(packageData, packageType, function (error) {
-            app_version = packageJson.version(packageData, packageType)
-            core.info(`New version: ${app_version}`)
-            await generateChangelog(tagPrefix, preset, app_version, outputFile, releaseCount)
-            await git.add('.')
-            await git.commit(commitMessage.replace('{version}', `${app_version}`))
-            await git.createTag(`${app_version}`)
-            await git.push()
-          })
+          packageJson.update(packageData, packageType)
+          app_version = packageJson.version(packageData, packageType)
+          core.info(`New version: ${app_version}`)
+          await generateChangelog(tagPrefix, preset, app_version, outputFile, releaseCount)
+          await git.add('pom.xml')
+          await git.add('.')
+          await git.commit(commitMessage.replace('{version}', `${app_version}`))
+          await git.createTag(`${app_version}`)
+          await git.push()
 
         } catch (error) {
           core.error(`Handling of ${packageType} failed`)
