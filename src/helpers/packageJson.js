@@ -100,21 +100,21 @@ module.exports = {
       } catch (err2) {
         core.error("Error:" + err2.message)
       }
-      
-        try {
-          var node = select(`/pom:project/pom:version`, packageJson)
-          for (let i = 0; i < node.length; i++) {
-            core.debug("Node " + i + ": " + node[i].childNodes[0].nodeValue)
-          }
-        } catch (err1) {
-          core.error(err1.message)
+
+      try {
+        var node = select(`/pom:project/pom:version`, packageJson)
+        for (let i = 0; i < node.length; i++) {
+          core.debug("Node " + i + ": " + node[i].childNodes[0].nodeValue)
         }
-      
+      } catch (err1) {
+        core.error(err1.message)
+      }
+
       // var node  = result.first()
       try {
-        core.debug("Result NodeValue: " + node.nodeValue)
-        core.debug("Result NodeValue: " + node.data)
-        node.nodeValue = `${tagPrefix}${major}.${minor}.${patch}`
+        core.debug("Result NodeValue: " + node[0].nodeValue)
+        core.debug("Result NodeValue: " + node[0].data)
+        node[0].nodeValue = `${tagPrefix}${major}.${minor}.${patch}`
       } finally {
 
       }
