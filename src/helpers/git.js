@@ -30,7 +30,7 @@ module.exports = new (class Git {
    * @param command
    * @return {Promise<>}
    */
-  exec = command => new Promise(async(resolve, reject) => {
+  exec = command => new Promise(async (resolve, reject) => {
     let myOutput = ''
     let myError = ''
 
@@ -100,6 +100,25 @@ module.exports = new (class Git {
    */
   checkout = () => (
     this.exec(`checkout ${branch}`)
+  )
+
+
+  /**
+   * Git Log
+   *
+   * @return {Promise<>}
+   */
+  log = (args = []) => (
+    this.exec(`log ${args.join(' ')}`)
+  )
+
+  /**
+ * Status 
+ *
+ * @return {Promise<>}
+ */
+  status = () => (
+    this.exec(`status`)
   )
 
   /**

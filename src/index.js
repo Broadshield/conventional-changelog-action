@@ -46,6 +46,8 @@ async function run() {
           await generateChangelog(tagPrefix, preset, app_version, outputFile, releaseCount)
           await git.add('pom.xml')
           await git.add('.')
+          await git.status()
+          await git.log(['--pretty="format:%h: by %cn on %cD - %s"', '--since="yesterday"', '--author="Conventional Changelog Action"'])
           await git.commit(commitMessage.replace('{version}', `${app_version}`))
           await git.createTag(`${app_version}`)
           await git.push()
