@@ -117,7 +117,7 @@ module.exports = {
       fs.writeFileSync(path.resolve('./', packageType) + '.tmp', xml, 'utf8')
       if (fs.existsSync(path.resolve('./', packageType) + '.tmp')) {
         core.debug("pom.xml file create success")
-        fs.renameSync(path.resolve('./', packageType) + '.tmp', path.resolve('./', packageType) + '.tmp', function(err){
+        fs.renameSync(path.resolve('./', packageType) + '.tmp', path.resolve('./', packageType), function(err){
           if (err) {
             core.debug("File rename failed")
           }
