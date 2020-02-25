@@ -50,17 +50,16 @@ module.exports = {
       // Update the package.json with the new version
       return packageJson.version
     } else {
-      var xml = new dom().parseFromString(packageJson.toString())
       var result = xpath.evaluate(
         "/",            // xpathExpression
-        xml,                        // contextNode
+        packageJson,                        // contextNode
         null,                       // namespaceResolver
         xpath.XPathResult.ANY_TYPE, // resultType
         null                        // result
       )
       node = result.iterateNext()
       while (node) {
-        core.info("Node: " + node.localName)
+        core.info("Node: " + node.toString())
         if (node.localName == "version") {
         var app_version = node.firstChild.data
         core.debug(`version found in pom.xml is ${app_version}`)
