@@ -113,7 +113,11 @@ module.exports = {
     } else if (packageType == "pom.xml") {
       var oSerializer = new XMLSerializer()
       var xml = oSerializer.serializeToString(packageJson)
+      core.debug("Starting to write updated file")
       fs.writeFileSync(path.resolve('./', packageType), xml)
+      let v = module.exports.version(await module.exports.version(packageType), packageType)
+      core.debug(`Version in file is ${v}`)
+      core.debug("Finished update")
     }
   },
 
