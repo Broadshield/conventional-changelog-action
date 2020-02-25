@@ -115,7 +115,8 @@ module.exports = {
       var xml = oSerializer.serializeToString(packageJson)
       core.debug("Starting to write updated file")
       fs.writeFileSync(path.resolve('./', packageType), xml)
-      let v = module.exports.version(module.exports.version(packageType), packageType)
+      let rxml = module.exports.get(packageType)
+      let v = module.exports.version(rxml, packageType)
       core.debug(`Version in file is ${v}`)
       core.debug("Finished update")
     }
