@@ -43,27 +43,32 @@ module.exports = {
    * @return {*}
    */
   version: (packageJson, packageType) => {
-    var node = null
     core.debug('Starting version function')
     if (packageType == "package.json") {
       core.debug(`version found in package.json is ${packageJson.version}`)
       // Update the package.json with the new version
       return packageJson.version
     } else {
+      var firstresult = xpath.select(
+        "string(/project/version)",
+        packageJson
+      )
+      core.debug(`Is version ${firstresult}`)
       var result = xpath.evaluate(
-        "project",            // xpathExpression
+        "//project",            // xpathExpression
         packageJson,                        // contextNode
         null,                       // namespaceResolver
         xpath.XPathResult.ANY_TYPE, // resultType
         null                        // result
       )
-      node = result.iterateNext()
+      let node = result.iterateNext()
       while (node) {
-        core.info("Node: " + node.toString())
+        core.debug("node.data: " + node.data)
+        core.debug("node.nodeValue: " + node.nodeValue)
         if (node.localName == "version") {
-        var app_version = node.firstChild.data
-        core.debug(`version found in pom.xml is ${app_version}`)
-        return app_version
+          var app_version = node.firstChild.data
+          core.debug(`version found in pom.xml is ${app_version}`)
+          return app_version
         }
         node = result.iterateNext()
       }
@@ -117,7 +122,7 @@ module.exports = {
       node = result.iterateNext();
       if (node) {
         node.firstChild.data = `${tagPrefix}${major}.${minor}.${patch}`
-      }      
+      }
     }
     core.debug(`Version updated to: ${tagPrefix}${major}.${minor}.${patch}`)
     return packageJson
