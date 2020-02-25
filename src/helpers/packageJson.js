@@ -50,7 +50,7 @@ module.exports = {
     } else {
       
       var result = xpath.evaluate(
-        "/project/version",            // xpathExpression
+        "//project/version",            // xpathExpression
         packageJson,                        // contextNode
         null,                       // namespaceResolver
         xpath.XPathResult.ANY_TYPE, // resultType
@@ -103,7 +103,7 @@ module.exports = {
       packageJson.version = `${tagPrefix}${major}.${minor}.${patch}`
     } else {
       var result = xpath.evaluate(
-        "/project/version",            // xpathExpression
+        "//project/version",            // xpathExpression
         packageJson,                        // contextNode
         null,                       // namespaceResolver
         xpath.XPathResult.ANY_TYPE, // resultType
