@@ -61,12 +61,13 @@ module.exports = {
       )
       node = result.iterateNext()
       while (node) {
-        core.info("Node: " + node.toString())
+        core.info("Node: " + node.nodeValue.toString())
         if (node.localName == "version") {
         var app_version = node.firstChild.data
         core.debug(`version found in pom.xml is ${app_version}`)
         return app_version
         }
+        node = result.iterateNext()
       }
       core.debug('Ending version function')
     }
