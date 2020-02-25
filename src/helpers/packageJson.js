@@ -4,7 +4,7 @@ const core = require('@actions/core')
 const dom = require('xmldom').DOMParser
 const XMLSerializer = require('xmldom').XMLSerializer
 const xpath = require('xpath')
-var select = xpath.useNamespaces({"pom": "http://maven.apache.org/POM/4.0.0"})
+var select = xpath.useNamespaces({ "pom": "http://maven.apache.org/POM/4.0.0" })
 
 module.exports = {
 
@@ -55,8 +55,8 @@ module.exports = {
       core.debug(`version found in pom.xml is ${app_version}`)
       core.debug('Ending version function')
       return app_version
-  }
-},
+    }
+  },
 
   /**
    * Bumps the version in the package.json
@@ -95,14 +95,20 @@ module.exports = {
     } else {
       var node = null
       try {
-      node = select(`/pom:project/pom:version`, packageJson, true)
+        core.debug("elementsbyname:" + packageJson.getElementsByTagName("project")[0].childNodes.toString())
+
+      } catch (err2) {
+        core.error("Error:" + err2.message)
+      }
+      try {
+        node = select(`/pom:project/pom:version`, packageJson, true)
       } catch (err) {
         core.error(err)
         try {
-        var result = select(`/pom:project/pom:version`, packageJson)
-        node = result.iterateNext()
-        } catch (err) {
-          core.error(err)
+          var result = select(`/pom:project/pom:version`, packageJson)
+          node = result.iterateNext()
+        } catch (err1) {
+          core.error(err1.message)
           node = null
         }
       }
@@ -116,29 +122,29 @@ module.exports = {
     return packageJson
   },
 
-    /**
-     * Update package.json
-     *
-     * @param packageJson
-     * @param packageType
-     * @return {*}
-     */
-    update: (packageJson, packageType) => {
-      if (packageType == "package.json") {
-        fs.writeFileSync(path.resolve('./', packageType), JSON.stringify(packageJson, null, 2))
-      } else if (packageType == "pom.xml") {
-        var oSerializer = new XMLSerializer()
-        var xml = oSerializer.serializeToString(packageJson)
-        fs.writeFileSync(path.resolve('./', packageType), xml, function (err, data) {
-          if (err) {
-            core.error(err)
-            core.setFailed(err.message)
-          } else {
-            console.log("successfully written our update xml to file")
-          }
+  /**
+   * Update package.json
+   *
+   * @param packageJson
+   * @param packageType
+   * @return {*}
+   */
+  update: (packageJson, packageType) => {
+    if (packageType == "package.json") {
+      fs.writeFileSync(path.resolve('./', packageType), JSON.stringify(packageJson, null, 2))
+    } else if (packageType == "pom.xml") {
+      var oSerializer = new XMLSerializer()
+      var xml = oSerializer.serializeToString(packageJson)
+      fs.writeFileSync(path.resolve('./', packageType), xml, function (err, data) {
+        if (err) {
+          core.error(err)
+          core.setFailed(err.message)
+        } else {
+          console.log("successfully written our update xml to file")
+        }
 
-        })
-      }
-    },
+      })
+    }
+  },
 
 }
