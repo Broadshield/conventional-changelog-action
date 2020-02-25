@@ -41,13 +41,27 @@ module.exports = {
    * @return {*}
    */
   version: (packageJson, packageType) => {
+    var node = null
     core.debug('Starting version function')
     if (packageType == "package.json") {
       core.debug(`version found in package.json is ${packageJson.version}`)
       // Update the package.json with the new version
       return packageJson.version
     } else {
-      core.info(`XMLDOM: ${packageJson.toString()}`)
+      var result1 = xpath.evaluate(
+        "/",            // xpathExpression
+        packageJson,                        // contextNode
+        null,                       // namespaceResolver
+        xpath.XPathResult.ANY_TYPE, // resultType
+        null                        // result
+      )
+      node = result1.iterateNext()
+      while (node) {
+        core.debug(node.localName + ": " + node.firstChild.data);
+        core.debug("Node: " + node.toString());
+     
+        node = result1.iterateNext();
+    }
       var result = xpath.evaluate(
         "/package/version",            // xpathExpression
         packageJson,                        // contextNode
@@ -76,6 +90,7 @@ module.exports = {
    */
   bump: (packageJson, releaseType, packageType, tagPrefix) => {
     core.debug('Starting bump function')
+    var node = null
     let app_version = module.exports.version(packageJson, packageType)
     let [major, minor, patch] = app_version.split('.')
 
