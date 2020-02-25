@@ -112,9 +112,9 @@ module.exports = {
 
       // var node  = result.first()
       try {
-        core.debug("Result NodeValue: " + node[0].nodeValue)
-        core.debug("Result NodeValue: " + node[0].data)
-        node[0].nodeValue = `${tagPrefix}${major}.${minor}.${patch}`
+        core.debug("Result NodeValue: " + node[0].childNodes[0].nodeValue)
+        core.debug("Result NodeValue: " + node[0].childNodes[0].data)
+        node[0].childNodes[0].nodeValue = `${tagPrefix}${major}.${minor}.${patch}`
       } finally {
 
       }
