@@ -40,8 +40,8 @@ async function run() {
           )
 
           // Update the package.json or pom.xml file
-          await packageJson.update(packageData, packageType, function (error) {
-            app_version = await packageJson.version(packageData, packageType)
+          packageJson.update(packageData, packageType, function (error) {
+            app_version = packageJson.version(packageData, packageType)
             core.info(`New version: ${app_version}`)
             await generateChangelog(tagPrefix, preset, app_version, outputFile, releaseCount)
             await git.add('.')
