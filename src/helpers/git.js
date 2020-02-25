@@ -111,6 +111,14 @@ module.exports = new (class Git {
   log = (args = []) => (
     this.exec(`log ${args.join(' ')}`)
   )
+   /**
+   * Git Diff
+   *
+   * @return {Promise<>}
+   */
+  diff = (args = []) => (
+    this.exec(`diff ${args.join(' ')}`)
+  )
 
   /**
  * Status 

@@ -44,12 +44,15 @@ async function run() {
           app_version = packageJson.version(packageData, packageType)
           core.info(`New version: ${app_version}`)
           await generateChangelog(tagPrefix, preset, app_version, outputFile, releaseCount)
-          await git.add('pom.xml')
+
           await git.add('.')
-          await git.log(['--pretty="format:::info::%h: by %cn on %cD - %s"', '--since="yesterday"', '--author="Conventional Changelog Action"'])
+          if (process.env.ACTIONS_STEP_DEBUG == "true") {
+            await git.add('pom.xml')
+            await git.diff(['--name-only', '--cached'])
+            await git.log(['--pretty="format:##[debug]::%h: by %cn on %cD - %s"', '--since="yesterday"', '--author="Conventional Changelog Action"'])
+          }
           await git.commit(commitMessage.replace('{version}', `${app_version}`))
           await git.createTag(`${app_version}`)
-          await git.status()
           await git.push()
 
         } catch (error) {

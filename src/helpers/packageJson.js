@@ -124,10 +124,12 @@ module.exports = {
         })
         core.debug("File renamed")
       }
+      if (process.env.ACTIONS_STEP_DEBUG == "true") {
       let rxml = module.exports.get(packageType)
       let v = module.exports.version(rxml, packageType)
       let v2 = module.exports.version(packageJson, packageType)
       core.debug(`Version in file is ${v} but version passed in is ${v2}`)
+      }
       core.debug("Finished update")
     }
   },
