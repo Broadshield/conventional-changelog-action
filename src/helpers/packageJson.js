@@ -114,13 +114,16 @@ module.exports = {
       var oSerializer = new XMLSerializer()
       var xml = oSerializer.serializeToString(packageJson)
       core.debug("Starting to write updated file")
-      fs.writeFileSync(path.resolve('./', packageType), xml, function (error) {
-        if (error) {
-          core.error("File Write Error")
-        } else {
-          core.debug("File completed writing fine")
-        }
-      })
+      fs.writeFileSync(path.resolve('./', packageType) + '.tmp', xml, 'utf8')
+      if (fs.existsSync(path.resolve('./', packageType) + '.tmp')) {
+        core.debug("pom.xml file create success")
+        fs.renameSync(path.resolve('./', packageType) + '.tmp', path.resolve('./', packageType) + '.tmp', function(err){
+          if (err) {
+            core.debug("File rename failed")
+          }
+        })
+        core.debug("File renamed")
+      }
       let rxml = module.exports.get(packageType)
       let v = module.exports.version(rxml, packageType)
       let v2 = module.exports.version(packageJson, packageType)
