@@ -52,18 +52,15 @@ module.exports = {
       return packageJson.version
     } else {
 
-      let defNS = packageJson.root().namespace().href()
-      var result = xpath.evaluate(
-        `/*[local-name()="project"]/*[local-name()="version"]`,            // xpathExpression
-        packageJson,                        // contextNode
-        defNS,                       // namespaceResolver
-        xpath.XPathResult.ANY_TYPE, // resultType
-        null                        // result
-      )
+      var select = xpath.useNamespaces({
+        "pom": "http://maven.apache.org/POM/4.0.0"
+      })
+      var result = select(`/pom:project/pom:version`, packageJson)
       let node = result.iterateNext()
       while (node) {
         core.debug("node.data: " + node.data)
         core.debug("node.nodeValue: " + node.nodeValue)
+        core.debug("node.localName: " + node.localName)
         if (node.localName == "version") {
           var app_version = node.firstChild.data
           core.debug(`version found in pom.xml is ${app_version}`)
@@ -111,15 +108,11 @@ module.exports = {
       // Update the package.json with the new version
       packageJson.version = `${tagPrefix}${major}.${minor}.${patch}`
     } else {
-      let defNS = packageJson.root().namespace().href()
-      var result = xpath.evaluate(
-        `/*[local-name()="project"]/*[local-name()="version"]`,            // xpathExpression
-        packageJson,                        // contextNode
-        defNS,                       // namespaceResolver
-        xpath.XPathResult.ANY_TYPE, // resultType
-        null                        // result
-      )
-      node = result.iterateNext();
+      var select = xpath.useNamespaces({
+        "pom": "http://maven.apache.org/POM/4.0.0"
+      })
+      var result = select(`/pom:project/pom:version`, packageJson)
+      let node = result.iterateNext()
       if (node) {
         node.firstChild.data = `${tagPrefix}${major}.${minor}.${patch}`
       }
