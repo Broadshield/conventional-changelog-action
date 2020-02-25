@@ -28,8 +28,6 @@ module.exports = {
     } else if (packageType == "pom.xml") {
       let raw = fs.readFileSync(fpath, "utf8")
       var xml = new dom().parseFromString(raw, 'text/xml')
-      core.debug("DocumentElement is:" + xml.documentElement)
-      core.debug("DocumentElement.firstChild is:" + xml.documentElement.firstChild)
       core.debug('Ending get function')
       return xml
     } else {
@@ -49,28 +47,17 @@ module.exports = {
     if (packageType == "package.json") {
       core.debug(`version found in package.json is ${packageJson.version}`)
       // Update the package.json with the new version
+      core.debug('Ending version function')
       return packageJson.version
     } else {
 
-      var select = xpath.useNamespaces({
-        "pom": "http://maven.apache.org/POM/4.0.0"
-      })
-      var result = select(`/pom:project/pom:version`, packageJson)
-      let node = result.iterateNext()
-      while (node) {
-        core.debug("node.data: " + node.data)
-        core.debug("node.nodeValue: " + node.nodeValue)
-        core.debug("node.localName: " + node.localName)
-        if (node.localName == "version") {
-          var app_version = node.firstChild.data
-          core.debug(`version found in pom.xml is ${app_version}`)
-          return app_version
-        }
-        node = result.iterateNext()
-      }
+      var select = xpath.useNamespaces({"pom": "http://maven.apache.org/POM/4.0.0"})
+      var app_version = select(`/pom:project/pom:version/text()`, packageJson).toString()
+      core.debug(`version found in pom.xml is ${app_version}`)
       core.debug('Ending version function')
-    }
-  },
+      return app_version
+  }
+},
 
   /**
    * Bumps the version in the package.json
@@ -83,7 +70,6 @@ module.exports = {
    */
   bump: (packageJson, releaseType, packageType, tagPrefix) => {
     core.debug('Starting bump function')
-    var node = null
     let app_version = module.exports.version(packageJson, packageType)
     let [major, minor, patch] = app_version.split('.')
 
@@ -108,42 +94,38 @@ module.exports = {
       // Update the package.json with the new version
       packageJson.version = `${tagPrefix}${major}.${minor}.${patch}`
     } else {
-      var select = xpath.useNamespaces({
-        "pom": "http://maven.apache.org/POM/4.0.0"
-      })
-      var result = select(`/pom:project/pom:version`, packageJson)
-      let node = result.iterateNext()
-      if (node) {
-        node.firstChild.data = `${tagPrefix}${major}.${minor}.${patch}`
-      }
+      var select = xpath.useNamespaces({"pom": "http://maven.apache.org/POM/4.0.0"})
+      var result = select(`/pom:project/pom:version/`, packageJson)
+      core.debug("Result: " + result)
+      result.data = `${tagPrefix}${major}.${minor}.${patch}`
     }
     core.debug(`Version updated to: ${tagPrefix}${major}.${minor}.${patch}`)
     return packageJson
   },
 
-  /**
-   * Update package.json
-   *
-   * @param packageJson
-   * @param packageType
-   * @return {*}
-   */
-  update: (packageJson, packageType) => {
-    if (packageType == "package.json") {
-      fs.writeFileSync(path.resolve('./', packageType), JSON.stringify(packageJson, null, 2))
-    } else if (packageType == "pom.xml") {
-      var oSerializer = new XMLSerializer()
-      var xml = oSerializer.serializeToString(packageJson)
-      fs.writeFileSync(path.resolve('./', packageType), xml, function (err, data) {
-        if (err) {
-          core.error(err)
-          core.setFailed(err.message)
-        } else {
-          console.log("successfully written our update xml to file")
-        }
+    /**
+     * Update package.json
+     *
+     * @param packageJson
+     * @param packageType
+     * @return {*}
+     */
+    update: (packageJson, packageType) => {
+      if (packageType == "package.json") {
+        fs.writeFileSync(path.resolve('./', packageType), JSON.stringify(packageJson, null, 2))
+      } else if (packageType == "pom.xml") {
+        var oSerializer = new XMLSerializer()
+        var xml = oSerializer.serializeToString(packageJson)
+        fs.writeFileSync(path.resolve('./', packageType), xml, function (err, data) {
+          if (err) {
+            core.error(err)
+            core.setFailed(err.message)
+          } else {
+            console.log("successfully written our update xml to file")
+          }
 
-      })
-    }
-  },
+        })
+      }
+    },
 
 }
