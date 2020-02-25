@@ -27,7 +27,7 @@ module.exports = {
       return JSON.parse(fs.readFileSync(fpath, "utf8"))
     } else if (packageType == "pom.xml") {
       let raw = fs.readFileSync(fpath, "utf8")
-      var xml = new dom().parseFromString(raw.toString(), "application/xml")
+      var xml = new dom().parseFromString(raw)
       core.debug('Ending get function')
       return xml
     } else {
@@ -50,10 +50,10 @@ module.exports = {
       // Update the package.json with the new version
       return packageJson.version
     } else {
-      
+      var xml = new dom().parseFromString(packageJson.toString())
       var result = xpath.evaluate(
         "/",            // xpathExpression
-        packageJson,                        // contextNode
+        xml,                        // contextNode
         null,                       // namespaceResolver
         xpath.XPathResult.ANY_TYPE, // resultType
         null                        // result
