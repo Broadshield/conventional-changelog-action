@@ -27,7 +27,7 @@ module.exports = {
     } else if (packageType == "pom.xml") {
       let raw = fs.readFileSync(fpath, "utf8")
       let oParser = new DOMParser()
-      let xml = oParser.parseFromString(raw.toString(), "application/xml")
+      var xml = oParser.parseFromString(raw.toString(), "application/xml")
       return xml
     } else {
       core.setFailed("Incorrect package Type")
@@ -47,7 +47,8 @@ module.exports = {
       // Update the package.json with the new version
       return packageJson.version
     } else {
-      let nodes = xpath.select("/project/version", packageJson)
+      let nodes = xpath.select("//project/version", packageJson)
+      core.info("Node: " + nodes[0].toString())
       var app_version = nodes[0].firstChild.data
       core.debug(`version found in pom.xml is ${app_version}`)
       return app_version
