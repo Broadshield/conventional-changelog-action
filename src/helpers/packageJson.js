@@ -4,6 +4,7 @@ const core = require('@actions/core')
 const dom = require('xmldom').DOMParser
 const XMLSerializer = require('xmldom').XMLSerializer
 const xpath = require('xpath')
+var select = xpath.useNamespaces({"pom": "http://maven.apache.org/POM/4.0.0"})
 
 module.exports = {
 
@@ -50,9 +51,7 @@ module.exports = {
       core.debug('Ending version function')
       return packageJson.version
     } else {
-
-      var select = xpath.useNamespaces({"pom": "http://maven.apache.org/POM/4.0.0"})
-      var app_version = select(`/pom:project/pom:version/text()`, packageJson).toString()
+      var app_version = select(`/pom:project/pom:version/text()`, packageJson)[0].nodeValue
       core.debug(`version found in pom.xml is ${app_version}`)
       core.debug('Ending version function')
       return app_version
@@ -94,10 +93,13 @@ module.exports = {
       // Update the package.json with the new version
       packageJson.version = `${tagPrefix}${major}.${minor}.${patch}`
     } else {
-      var select = xpath.useNamespaces({"pom": "http://maven.apache.org/POM/4.0.0"})
+      
       var result = select(`/pom:project/pom:version/`, packageJson)
-      core.debug("Result: " + result)
-      result.data = `${tagPrefix}${major}.${minor}.${patch}`
+      var node  = result.iterateNext()
+
+      core.debug("Result NodeValue: " + node.nodeValue)
+      core.debug("Result NodeValue: " + node.data)
+      node.data = `${tagPrefix}${major}.${minor}.${patch}`
     }
     core.debug(`Version updated to: ${tagPrefix}${major}.${minor}.${patch}`)
     return packageJson
