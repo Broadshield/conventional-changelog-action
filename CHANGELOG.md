@@ -1,4 +1,8 @@
-## [v0.0.3](https://github.com/TriPSs/conventional-changelog-action/compare/v0.0.2...v0.0.3) (2020-02-25)
+## [v0.0.4](https://github.com/TriPSs/conventional-changelog-action/compare/v0.0.3...v0.0.4) (2020-02-25)
+
+
+
+## [0.0.3](https://github.com/TriPSs/conventional-changelog-action/compare/v0.0.2...v0.0.3) (2020-02-25)
 
 
 
@@ -38,15 +42,6 @@
 * Test release ([c471392](https://github.com/TriPSs/conventional-changelog-action/commit/c47139231d3289a08ee39c0b1978b9e935d456a5))
 * Test release ([d71558c](https://github.com/TriPSs/conventional-changelog-action/commit/d71558cec69d773fb6846734b57ff55a6d7b3648))
 * Test release ([5945aae](https://github.com/TriPSs/conventional-changelog-action/commit/5945aaed8f5e59d227742dd35670381cf444aa93))
-
-
-
-## [0.0.1](https://github.com/TriPSs/conventional-changelog-action/compare/70ed437cb42d5ad01303d98797a7988fe1266f6b...v0.0.1) (2019-10-17)
-
-
-### Bug Fixes
-
-* Fixed name action.yml ([70ed437](https://github.com/TriPSs/conventional-changelog-action/commit/70ed437cb42d5ad01303d98797a7988fe1266f6b))
 
 
 
