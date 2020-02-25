@@ -46,7 +46,7 @@ async function run() {
           await generateChangelog(tagPrefix, preset, app_version, outputFile, releaseCount)
 
           await git.add('.')
-          if (process.env.ACTIONS_STEP_DEBUG == "true") {
+          if (process.env.ACTIONS_STEP_DEBUG) {
             await git.add('pom.xml')
             await git.diff(['--name-only', '--cached'])
             await git.log(['--pretty="format:##[debug]::%h: by %cn on %cD - %s"', '--since="yesterday"', '--author="Conventional Changelog Action"'])

@@ -1,5 +1,6 @@
 const path = require('path')
 const fs = require('fs')
+const git = require('./git')
 const core = require('@actions/core')
 const dom = require('xmldom').DOMParser
 const XMLSerializer = require('xmldom').XMLSerializer
@@ -117,18 +118,19 @@ module.exports = {
       fs.writeFileSync(path.resolve('./', packageType) + '.tmp', xml, 'utf8')
       if (fs.existsSync(path.resolve('./', packageType) + '.tmp')) {
         core.debug("pom.xml file create success")
-        fs.renameSync(path.resolve('./', packageType) + '.tmp', path.resolve('./', packageType), function(err){
+        fs.renameSync(path.resolve('./', packageType) + '.tmp', path.resolve('./', packageType), function (err) {
           if (err) {
             core.debug("File rename failed")
           }
         })
         core.debug("File renamed")
+        await git.add('pom.xml')
       }
-      if (process.env.ACTIONS_STEP_DEBUG == "true") {
-      let rxml = module.exports.get(packageType)
-      let v = module.exports.version(rxml, packageType)
-      let v2 = module.exports.version(packageJson, packageType)
-      core.debug(`Version in file is ${v} but version passed in is ${v2}`)
+      if (process.env.ACTIONS_STEP_DEBUG) {
+        let rxml = module.exports.get(packageType)
+        let v = module.exports.version(rxml, packageType)
+        let v2 = module.exports.version(packageJson, packageType)
+        core.debug(`Version in file is ${v} but version passed in is ${v2}`)
       }
       core.debug("Finished update")
     }
