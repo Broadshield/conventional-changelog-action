@@ -95,31 +95,28 @@ module.exports = {
     } else {
       var node = null
       try {
-        core.debug("elementsbyname:" + packageJson.getElementsByTagName("project")[0].packageJson.getElementsByTagName("version")[0].toString())
+        core.debug("elementsbyname:" + packageJson.getElementsByTagName("project")[0].getElementsByTagName("version")[0].toString())
 
       } catch (err2) {
         core.error("Error:" + err2.message)
       }
-      try {
-        node = select(`/pom:project/pom:version`, packageJson, true)
-      } catch (err) {
-        core.error(err.message)
+      
         try {
           var node = select(`/pom:project/pom:version`, packageJson)
-          for (let i = 0; i<node.length;i++) {
+          for (let i = 0; i < node.length; i++) {
             core.debug("Node " + i + ": " + node[i].childNodes[0].nodeValue)
           }
         } catch (err1) {
           core.error(err1.message)
         }
-      }
+      
       // var node  = result.first()
       try {
         core.debug("Result NodeValue: " + node.nodeValue)
         core.debug("Result NodeValue: " + node.data)
         node.nodeValue = `${tagPrefix}${major}.${minor}.${patch}`
       } finally {
-        
+
       }
     }
     core.debug(`Version updated to: ${tagPrefix}${major}.${minor}.${patch}`)
