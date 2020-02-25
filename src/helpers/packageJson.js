@@ -50,10 +50,11 @@ module.exports = {
       return packageJson.version
     } else {
       var firstresult = xpath.select(
-        "/project",
+        "/",
         packageJson
       )
-      core.debug(`Is version ${firstresult.toString()}`)
+      firstresult.forEach(i => core.debug(`Is version ${i.data}`))
+
       var result = xpath.evaluate(
         "//project",            // xpathExpression
         packageJson,                        // contextNode
