@@ -29,7 +29,7 @@ async function run() {
         
         try {
           
-          const packageData = await packageJson.get(packageType)
+          var packageData = await packageJson.get(packageType)
           
           // Bump the version in the package.json
           packageData = await packageJson.bump(
@@ -39,7 +39,7 @@ async function run() {
             tagPrefix
           )
           
-          // Update the package.json file
+          // Update the package.json or pom.xml file
           await packageJson.update(packageData, packageType)
           app_version = await packageJson.version(packageData, packageType)
           core.info(`New version: ${app_version}`)
