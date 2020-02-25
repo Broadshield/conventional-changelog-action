@@ -93,9 +93,8 @@ module.exports = {
       // Update the package.json with the new version
       packageJson.version = `${tagPrefix}${major}.${minor}.${patch}`
     } else {
-      
-      var result = select(`/pom:project/pom:version/`, packageJson)
-      var node  = result.first()
+      var node = select(`/pom:project/pom:version/`, packageJson, true)
+      // var node  = result.first()
 
       core.debug("Result NodeValue: " + node.nodeValue)
       core.debug("Result NodeValue: " + node.data)
