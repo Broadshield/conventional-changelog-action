@@ -1,7 +1,7 @@
 const path = require('path')
 const fs = require('fs')
 const core = require('@actions/core')
-const DOMParser = require('xmldom').DOMParser
+const dom = require('xmldom').DOMParser
 const XMLSerializer = require('xmldom').XMLSerializer
 const xpath = require('xpath')
 
@@ -27,8 +27,7 @@ module.exports = {
       return JSON.parse(fs.readFileSync(fpath, "utf8"))
     } else if (packageType == "pom.xml") {
       let raw = fs.readFileSync(fpath, "utf8")
-      let oParser = new DOMParser()
-      var xml = oParser.parseFromString(raw.toString(), "application/xml")
+      var xml = new dom().parseFromString(raw.toString(), "application/xml")
       core.debug('Ending get function')
       return xml
     } else {
@@ -61,7 +60,7 @@ module.exports = {
       )
       node = result.iterateNext()
       while (node) {
-        core.info("Node: " + node.nodeValue.toString())
+        core.info("Node: " + node.localName)
         if (node.localName == "version") {
         var app_version = node.firstChild.data
         core.debug(`version found in pom.xml is ${app_version}`)
